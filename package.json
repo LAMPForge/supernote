@@ -1,0 +1,23 @@
+{
+  "name": "supernote",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "nx run-many -t build",
+    "start": "pnpm --filter ./apps/backend run start:prod",
+    "server:build": "nx run backend:build",
+    "client:build": "nx run frontend:build",
+    "frontend:dev": "nx run frontend:dev",
+    "backend:dev": "nx run backend:start:dev",
+    "backend:start": "nx run backend:start:prod",
+    "dev": "pnpm concurrently -n \"frontend,backend\" -c \"cyan,green\" \"pnpm run frontend:dev\" \"pnpm run backend:dev\""
+  },
+  "author": "Dai Nguyen Trong",
+  "license": "ISC",
+  "devDependencies": {
+    "@nx/js": "19.8.2",
+    "concurrently": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "nx": "19.8.2"
+  }
+}
