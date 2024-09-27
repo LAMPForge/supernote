@@ -1,5 +1,5 @@
-import { plainToInstance } from "class-transformer";
-import {IsNotEmpty, IsNotIn, IsOptional, IsUrl, validateSync} from "class-validator";
+import { plainToInstance } from 'class-transformer';
+import { IsNotEmpty, IsOptional, IsUrl, validateSync } from 'class-validator';
 
 export class EnvironmentVariables {
   @IsOptional()
@@ -18,7 +18,7 @@ export class EnvironmentVariables {
 }
 
 export function validate(config: Record<string, any>) {
-    const validatedConfig = plainToInstance(EnvironmentVariables, config);
+  const validatedConfig = plainToInstance(EnvironmentVariables, config);
 
   const errors = validateSync(validatedConfig);
 
