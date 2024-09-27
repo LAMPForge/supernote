@@ -6,6 +6,7 @@ import {
 } from '@nestjs/platform-fastify';
 import { NotFoundException, ValidationPipe } from '@nestjs/common';
 import { TransformHttpResponseInterceptor } from './common/interceptors/http-response.interceptor';
+import { InternalLogFilter } from './common/logger/internal-log-filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -15,6 +16,9 @@ async function bootstrap() {
       ignoreDuplicateSlashes: true,
       maxParamLength: 500,
     }),
+    {
+      logger: new InternalLogFilter(),
+    },
   );
 
   app.setGlobalPrefix('api');
