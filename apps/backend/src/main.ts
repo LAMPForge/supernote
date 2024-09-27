@@ -7,6 +7,8 @@ import {
 import { NotFoundException, ValidationPipe } from '@nestjs/common';
 import { TransformHttpResponseInterceptor } from './common/interceptors/http-response.interceptor';
 import { InternalLogFilter } from './common/logger/internal-log-filter';
+import fastifyCookie from "@fastify/cookie";
+import fastifyMultipart from "@fastify/multipart";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -22,6 +24,9 @@ async function bootstrap() {
   );
 
   app.setGlobalPrefix('api');
+
+  await app.register(fastifyMultipart as any);
+  await app.register(fastifyCookie as any);
 
   app
     .getHttpAdapter()

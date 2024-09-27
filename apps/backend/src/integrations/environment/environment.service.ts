@@ -27,4 +27,8 @@ export class EnvironmentService {
   getDatabaseUrl(): string {
     return this.configService.get<string>('DATABASE_URL');
   }
+
+  getJwtTokenExpiresIn(): string {
+    return this.configService.get<string>('JWT_TOKEN_EXPIRES_IN', '30d');
+  }
 }
