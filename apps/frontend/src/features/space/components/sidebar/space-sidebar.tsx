@@ -13,6 +13,7 @@ import { useSpaceAbility } from '../../permissions/use-space-ability.ts';
 import { SpaceCaslAction, SpaceCaslSubject } from '../../permissions/permissions.types.ts';
 import { useAtom } from 'jotai';
 import { treeApiAtom } from '../../../page/tree/atoms/tree-api-atom.ts';
+import SpaceTree from '../../../page/tree/components/space-tree.tsx';
 
 export function SpaceSidebar() {
   const [tree] = useAtom(treeApiAtom);
@@ -140,6 +141,13 @@ export function SpaceSidebar() {
           </Group>
 
           <div className={classes.pages}>
+            <SpaceTree
+              spaceId={space.id}
+              readOnly={spaceAbility.cannot(
+                SpaceCaslAction.Manage,
+                SpaceCaslSubject.Page
+              )}
+            />
           </div>
         </div>
       </div>

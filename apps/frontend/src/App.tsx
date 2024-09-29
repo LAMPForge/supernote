@@ -5,6 +5,8 @@ import Home from "./pages/dashboard/home";
 import LoginPage from "./pages/auth/login";
 import SetupWorkspace from './pages/auth/setup-workspace';
 import SpaceHome from './pages/space/space-home';
+import { ErrorBoundary } from 'react-error-boundary';
+import Page from './pages/page/page.tsx';
 
 function App() {
   return (
@@ -16,6 +18,16 @@ function App() {
         <Route element={<Layout />}>
           <Route path={"/home"} element={<Home />} />
           <Route path={"/s/:spaceSlug"} element={<SpaceHome />} />
+          <Route
+            path={"/s/:spaceSlug/p/:pageSlug"}
+            element={
+              <ErrorBoundary
+                fallback={<>Failed to load page. An error occurred.</>}
+              >
+                <Page />
+              </ErrorBoundary>
+            }
+          />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

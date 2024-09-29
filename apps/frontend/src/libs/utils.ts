@@ -5,3 +5,11 @@ export function formatMemberCount(memberCount: number): string {
     return `${memberCount} members`;
   }
 }
+
+export function extractPageSlugId(input: string): string {
+  if (!input) {
+    return undefined;
+  }
+  const parts = input.split("-");
+  return parts.length > 1 ? parts[parts.length - 1] : input;
+}

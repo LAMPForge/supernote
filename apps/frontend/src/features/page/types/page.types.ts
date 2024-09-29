@@ -21,3 +21,18 @@ export interface IPage {
   hasChildren: boolean;
   space: Partial<ISpace>;
 }
+
+export interface IPageInput {
+  pageId: string;
+  title: string;
+  parentPageId: string;
+  icon: string;
+  coverPhoto: string;
+  position: string;
+}
+
+export interface SidebarPagesParams {
+  spaceId: string;
+  pageId?: string;
+  page?: number;
+}
