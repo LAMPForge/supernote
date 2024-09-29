@@ -5,12 +5,15 @@ import { AuthUser } from '../../common/decorators/auth-user.decorator';
 import { User } from '@supernote/database/types/entity.types';
 import { PageService } from './services/page.service';
 import { RecentPageDto } from './dto/recent-page.dto';
+import SpaceAbilityFactory from '../casl/abilities/space-ability.factory';
+import { SpaceCaslAction, SpaceCaslSubject } from '../casl/interfaces/space-ability.types';
 
 @UseGuards(JwtAuthGuard)
 @Controller('pages')
 export class PageController {
   constructor(
     private readonly pageService: PageService,
+    private readonly spaceAbility: SpaceAbilityFactory,
   ) {}
 
   @HttpCode(HttpStatus.OK)
@@ -21,6 +24,15 @@ export class PageController {
     @AuthUser() user: User,
   ) {
     if (recentPageDto.spaceId) {
+      const ability = await this.spaceAbility.createForUser(
+        user,
+        recentPageDto.spaceId,
+      );
+
+      if (ability.cannot(SpaceCaslAction.Read, SpaceCaslSubject.Page)) {
+        throw new ForbiddenException();
+      }
+
       return this.pageService.getRecentSpacePages(
         recentPageDto.spaceId,
         pagination,

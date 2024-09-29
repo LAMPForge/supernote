@@ -15,3 +15,15 @@ export interface QueryParams {
   page?: number;
   limit?: number;
 }
+
+export enum UserRole {
+  OWNER = "owner",
+  ADMIN = "admin",
+  MEMBER = "member",
+}
+
+export enum SpaceRole {
+  ADMIN = "admin",
+  WRITER = "writer",
+  READER = "reader",
+}
