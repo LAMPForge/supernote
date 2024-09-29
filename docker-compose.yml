@@ -5,21 +5,33 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
     depends_on:
       - database
     environment:
-      APP_URL: "http://localhost:3000"
-      APP_SECRET: "secret"
-      DATABASE_URL: "postgresql://supernote:postgres@database:5432/supernote?schema=public"
+      APP_URL: ${APP_URL}
+      APP_SECRET: ${APP_SECRET}
+      DATABASE_URL: ${DATABASE_URL}
+    networks:
+      - supernote_network
   database:
-    image: postgres:16-alpine
+    image: postgres:15-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: supernote
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: supernote
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - data:/var/lib/postgresql/data
+    networks:
+      - supernote_network
 
 volumes:
   data:
+
+networks:
+  supernote_network:
+    driver: bridge

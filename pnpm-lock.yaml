@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
     devDependencies:
       '@nx/js':
         specifier: 19.8.2
@@ -14,9 +18,6 @@ importers:
       concurrently:
         specifier: ^9.0.1
         version: 9.0.1
-      cross-env:
-        specifier: ^7.0.3
-        version: 7.0.3
       nx:
         specifier: 19.8.2
         version: 19.8.2

@@ -14,10 +14,12 @@
   },
   "author": "Dai Nguyen Trong",
   "license": "ISC",
+  "dependencies": {
+    "cross-env": "^7.0.3"
+  },
   "devDependencies": {
     "@nx/js": "19.8.2",
     "concurrently": "^9.0.1",
-    "cross-env": "^7.0.3",
     "nx": "19.8.2",
     "tsx": "^4.19.1"
   }
