@@ -4,8 +4,9 @@ import { Strategy } from 'passport-jwt';
 import {UserRepository} from "@supernote/database/repositories/user/user.repository";
 import {WorkspaceRepository} from "@supernote/database/repositories/workspace/workspace.repository";
 import {EnvironmentService} from "../../../integrations/environment/environment.service";
-import { FastifyRequest } from 'fastify';
 import {JwtPayload, JwtType} from "../dto/jwt-payload.dto";
+import {FastifyRequest} from "fastify";
+
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {

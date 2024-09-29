@@ -7,12 +7,15 @@ import { UserRepository } from "@supernote/database/repositories/user/user.repos
 import { comparePassword } from "../../../common/helpers";
 import { TokensDto } from "../dto/tokens.dto";
 import { TokenService } from "./token.service";
+import { CreateOwnerUserDto } from '../dto/create-owner-user.dto';
+import { SignupService } from './signup.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userRepository: UserRepository,
     private tokenService: TokenService,
+    private signupService: SignupService,
     private environmentService: EnvironmentService,
     @InjectKysely() private readonly db: KyselyDB
   ) {}
@@ -32,6 +35,14 @@ export class AuthService {
     }
 
     const tokens: TokensDto = await this.tokenService.generateTokens(user);
+    return { tokens };
+  }
+
+  async setupWorkspace(setupWorkspaceInput: CreateOwnerUserDto) {
+    const user = await this.signupService.initialSetup(setupWorkspaceInput);
+
+    const tokens: TokensDto = await this.tokenService.generateTokens(user);
+
     return { tokens };
   }
 }

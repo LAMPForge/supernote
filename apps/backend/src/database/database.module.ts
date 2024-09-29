@@ -11,6 +11,12 @@ import { CamelCasePlugin, LogEvent, PostgresDialect, sql } from 'kysely';
 import { Pool } from 'pg';
 import { KyselyDB } from '@supernote/database/types/kysely.types';
 import { MigrationService } from '@supernote/database/services/migration.service';
+import { UserRepository } from '@supernote/database/repositories/user/user.repository';
+import { WorkspaceRepository } from '@supernote/database/repositories/workspace/workspace.repository';
+import { SpaceRepository } from '@supernote/database/repositories/space/space.repository';
+import { SpaceMemberRepository } from '@supernote/database/repositories/space/space-member.repository';
+import { GroupRepository } from '@supernote/database/repositories/group/group.repository';
+import { GroupUserRepository } from '@supernote/database/repositories/group/group-user.repository';
 
 @Global()
 @Module({
@@ -38,7 +44,23 @@ import { MigrationService } from '@supernote/database/services/migration.service
       }),
     }),
   ],
-  providers: [MigrationService],
+  providers: [
+    MigrationService,
+    UserRepository,
+    WorkspaceRepository,
+    SpaceRepository,
+    SpaceMemberRepository,
+    GroupRepository,
+    GroupUserRepository,
+  ],
+  exports: [
+    UserRepository,
+    WorkspaceRepository,
+    SpaceRepository,
+    SpaceMemberRepository,
+    GroupRepository,
+    GroupUserRepository,
+  ],
 })
 export class DatabaseModule implements OnModuleDestroy, OnApplicationBootstrap {
   private readonly logger = new Logger(DatabaseModule.name);

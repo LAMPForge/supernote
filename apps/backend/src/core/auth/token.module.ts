@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { EnvironmentService } from '../../integrations/environment/environment.service';
+import { TokenService } from './services/token.service';
 
 @Module({
   imports: [
@@ -17,5 +18,7 @@ import { EnvironmentService } from '../../integrations/environment/environment.s
       },
     }),
   ],
+  providers: [TokenService],
+  exports: [TokenService],
 })
 export class TokenModule {}

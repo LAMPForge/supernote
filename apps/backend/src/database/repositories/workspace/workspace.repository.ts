@@ -61,4 +61,12 @@ export class WorkspaceRepository {
       .where('id', '=', id)
       .execute();
   }
+
+  async count(): Promise<number> {
+    const { count } = await this.db
+      .selectFrom('workspaces')
+      .select((eb) => eb.fn.count('id').as('count'))
+      .executeTakeFirst();
+    return count as number;
+  }
 }

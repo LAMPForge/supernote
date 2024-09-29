@@ -1,8 +1,9 @@
 import {Navigate, Route, Routes} from "react-router-dom";
-import {Error404} from "./components/ui/error-404.tsx";
-import Layout from "./components/layouts/global/layout.tsx";
-import Home from "./pages/dashboard/home.tsx";
-import LoginPage from "./pages/auth/login.tsx";
+import {Error404} from "./components/ui/error-404";
+import Layout from "./components/layouts/global/layout";
+import Home from "./pages/dashboard/home";
+import LoginPage from "./pages/auth/login";
+import SetupWorkspace from './pages/auth/setup-workspace';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route index element={<Navigate to="/home" />} />
         <Route path={"/login"} element={<LoginPage />} />
+        <Route path={"/setup"} element={<SetupWorkspace />} />
         <Route element={<Layout />}>
           <Route path={"/home"} element={<Home />} />
         </Route>

@@ -21,6 +21,6 @@
     "jsx": "react",
     "paths": {
       "@supernote/database/*": ["./src/database/*"],
-    }
+    },
   }
 }
