@@ -4,6 +4,7 @@ import Layout from "./components/layouts/global/layout";
 import Home from "./pages/dashboard/home";
 import LoginPage from "./pages/auth/login";
 import SetupWorkspace from './pages/auth/setup-workspace';
+import SpaceHome from './pages/space/space-home';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path={"/setup"} element={<SetupWorkspace />} />
         <Route element={<Layout />}>
           <Route path={"/home"} element={<Home />} />
+          <Route path={"/s/:spaceSlug"} element={<SpaceHome />} />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

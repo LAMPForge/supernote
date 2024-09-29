@@ -43,6 +43,29 @@ export interface GroupUsers {
   userId: string;
 }
 
+export interface Pages {
+  content: Json | null;
+  coverPhoto: string | null;
+  createdAt: Generated<Timestamp>;
+  creatorId: string | null;
+  deletedAt: Timestamp | null;
+  deletedById: string | null;
+  icon: string | null;
+  id: Generated<string>;
+  isLocked: Generated<boolean>;
+  lastUpdatedById: string | null;
+  parentPageId: string | null;
+  position: string | null;
+  slugId: string;
+  spaceId: string;
+  textContent: string | null;
+  title: string | null;
+  tsv: string | null;
+  updatedAt: Generated<Timestamp>;
+  workspaceId: string;
+  ydoc: Buffer | null;
+}
+
 export interface SpaceMembers {
   addedById: string | null;
   createdAt: Generated<Timestamp>;
@@ -105,6 +128,7 @@ export interface Workspaces {
 export interface DB {
   groups: Groups;
   groupUsers: GroupUsers;
+  pages: Pages;
   spaceMembers: SpaceMembers;
   spaces: Spaces;
   users: Users;

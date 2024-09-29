@@ -1,6 +1,6 @@
 import { Container, Space } from "@mantine/core";
 import HomeTabs from "../../features/home/components/home-tabs.tsx";
-import SpaceGrid from "../../features/space/components/space-grid.tsx";
+import SpaceGrid from '../../features/space/components/space-grid';
 
 export default function Home() {
   return (

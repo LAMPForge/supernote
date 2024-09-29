@@ -3,7 +3,9 @@ import { InjectKysely } from 'nestjs-kysely';
 import { KyselyDB, KyselyTransaction } from '@supernote/database/types/kysely.types';
 import { InsertableSpace, Space } from '@supernote/database/types/entity.types';
 import { dbOrTrx } from '@supernote/database/utils';
-import { sql } from 'kysely';
+import { ExpressionBuilder, sql } from 'kysely';
+import { DB } from '@supernote/database/types/db';
+import { validate as isValidUUID } from 'uuid';
 
 @Injectable()
 export class SpaceRepository {
@@ -35,5 +37,49 @@ export class SpaceRepository {
       .executeTakeFirst();
     count = count as number;
     return count != 0;
+  }
+
+  withMemberCount(eb: ExpressionBuilder<DB, 'spaces'>) {
+    const subquery = eb
+      .selectFrom('spaceMembers')
+      .select('spaceMembers.userId')
+      .where('spaceMembers.userId', 'is not', null)
+      .whereRef('spaceMembers.spaceId', '=', 'spaces.id')
+      .union(
+        eb
+          .selectFrom('spaceMembers')
+          .where('spaceMembers.groupId', 'is not', null)
+          .leftJoin('groups', 'groups.id', 'spaceMembers.groupId')
+          .leftJoin('groupUsers', 'groupUsers.groupId', 'groups.id')
+          .select('groupUsers.userId')
+          .whereRef('spaceMembers.spaceId', '=', 'spaces.id'),
+      )
+      .as('userId');
+
+    return eb
+      .selectFrom(subquery)
+      .select((eb) => eb.fn.count('userId').as('count'))
+      .as('memberCount');
+  }
+
+  async findById(
+    spaceId: string,
+    workspaceId: string,
+    opts?: { includeMemberCount?: boolean; trx?: KyselyTransaction },
+  ): Promise<Space> {
+    const db = dbOrTrx(this.db, opts?.trx);
+
+    let query = db
+      .selectFrom('spaces')
+      .selectAll('spaces')
+      .$if(opts?.includeMemberCount, (qb) => qb.select(this.withMemberCount))
+      .where('workspaceId', '=', workspaceId);
+
+    if (isValidUUID(spaceId)) {
+      query = query.where('id', '=', spaceId);
+    } else {
+      query = query.where(sql`LOWER(slug)`, '=', sql`LOWER(${spaceId})`);
+    }
+    return query.executeTakeFirst();
   }
 }

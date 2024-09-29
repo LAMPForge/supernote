@@ -3,6 +3,9 @@ import { SpaceMemberRepository } from '@supernote/database/repositories/space/sp
 import { SpaceRepository } from '@supernote/database/repositories/space/space.repository';
 import { InjectKysely } from 'nestjs-kysely';
 import { KyselyDB, KyselyTransaction } from '@supernote/database/types/kysely.types';
+import { PaginationOptions } from '@supernote/database/pagination/pagination-options';
+import { Space } from '@supernote/database/types/entity.types';
+import { PaginationResult } from '@supernote/database/pagination/pagination';
 
 @Injectable()
 export class SpaceMemberService {
@@ -42,5 +45,12 @@ export class SpaceMemberService {
       },
       trx,
     );
+  }
+
+  async getUserSpaces(
+    userId: string,
+    pagination: PaginationOptions,
+  ): Promise<PaginationResult<Space>> {
+    return await this.spaceMemberRepository.getUserSpaces(userId, pagination);
   }
 }

@@ -10,6 +10,8 @@ import { WorkspaceModule } from './workspace/workspace.module';
 import { SpaceModule } from './space/space.module';
 import { GroupModule } from './group/group.module';
 import { DomainMiddleware } from '../common/middlewares/domain.middleware';
+import { PageModule } from './page/page.module';
+import { CaslModule } from './casl/casl.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { DomainMiddleware } from '../common/middlewares/domain.middleware';
     WorkspaceModule,
     SpaceModule,
     GroupModule,
+    PageModule,
+    CaslModule,
   ],
 })
 export class CoreModule implements NestModule {

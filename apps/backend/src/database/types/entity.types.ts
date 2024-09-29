@@ -1,5 +1,5 @@
 import { Insertable, Selectable, Updateable } from 'kysely';
-import { Workspaces, Users, Spaces, SpaceMembers, Groups, GroupUsers } from '@supernote/database/types/db';
+import { Workspaces, Users, Spaces, SpaceMembers, Groups, GroupUsers, Pages } from '@supernote/database/types/db';
 
 // Workspace types
 export type Workspace = Selectable<Workspaces>;
@@ -15,6 +15,12 @@ export type UpdatableUser = Updateable<Omit<Users, 'id'>>;
 export type Space = Selectable<Spaces>;
 export type InsertableSpace = Insertable<Spaces>;
 export type UpdatableSpace = Updateable<Omit<Spaces, 'id'>>;
+
+// Page types
+export type Page = Selectable<Pages>;
+export type InsertablePage = Insertable<Pages>;
+export type UpdatablePage = Updateable<Omit<Pages, 'id'>>;
+
 
 // Space members types
 export type SpaceMember = Selectable<SpaceMembers>;

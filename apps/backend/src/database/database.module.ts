@@ -17,6 +17,7 @@ import { SpaceRepository } from '@supernote/database/repositories/space/space.re
 import { SpaceMemberRepository } from '@supernote/database/repositories/space/space-member.repository';
 import { GroupRepository } from '@supernote/database/repositories/group/group.repository';
 import { GroupUserRepository } from '@supernote/database/repositories/group/group-user.repository';
+import { PageRepository } from '@supernote/database/repositories/page/page.repository';
 
 @Global()
 @Module({
@@ -52,6 +53,7 @@ import { GroupUserRepository } from '@supernote/database/repositories/group/grou
     SpaceMemberRepository,
     GroupRepository,
     GroupUserRepository,
+    PageRepository,
   ],
   exports: [
     UserRepository,
@@ -60,6 +62,7 @@ import { GroupUserRepository } from '@supernote/database/repositories/group/grou
     SpaceMemberRepository,
     GroupRepository,
     GroupUserRepository,
+    PageRepository,
   ],
 })
 export class DatabaseModule implements OnModuleDestroy, OnApplicationBootstrap {

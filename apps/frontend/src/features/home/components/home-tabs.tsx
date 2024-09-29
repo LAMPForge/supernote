@@ -13,10 +13,6 @@ export default function HomeTabs() {
       </Tabs.List>
 
       <Space my="md" />
-
-      <Tabs.Panel value="recent">
-        <Text size="sm">Recent</Text>
-      </Tabs.Panel>
     </Tabs>
   )
 }
