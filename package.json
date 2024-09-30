@@ -15,7 +15,19 @@
   "author": "Dai Nguyen Trong",
   "license": "ISC",
   "dependencies": {
-    "cross-env": "^7.0.3"
+    "@tiptap/core": "^2.7.4",
+    "@tiptap/extension-document": "^2.7.4",
+    "@tiptap/extension-heading": "^2.7.4",
+    "@tiptap/extension-history": "^2.7.4",
+    "@tiptap/extension-placeholder": "^2.7.4",
+    "@tiptap/extension-text": "^2.7.4",
+    "@tiptap/pm": "^2.7.4",
+    "@tiptap/react": "^2.7.4",
+    "@tiptap/starter-kit": "^2.7.4",
+    "@tiptap/suggestion": "^2.7.4",
+    "cross-env": "^7.0.3",
+    "y-indexeddb": "^9.0.12",
+    "yjs": "^13.6.19"
   },
   "devDependencies": {
     "@nx/js": "19.8.2",

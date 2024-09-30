@@ -1,7 +1,7 @@
-import { useInfiniteQuery, useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient, UseQueryResult } from '@tanstack/react-query';
 import { IPagination } from '../../../libs/types';
 import { IPage, IPageInput, SidebarPagesParams } from '../types/page.types';
-import { createPage, getPageById, getRecentChanges, getSidebarPages } from '../services/page-service';
+import { createPage, getPageById, getRecentChanges, getSidebarPages, updatePage } from '../services/page-service';
 import { notifications } from '@mantine/notifications';
 import { queryClient } from '../../../main.tsx';
 import { buildTree } from '../tree/tree.utils.ts';
@@ -68,4 +68,30 @@ export async function fetchAncestorChildren(params: SidebarPagesParams) {
     staleTime: 30 * 60 * 1000,
   });
   return buildTree(response.items);
+}
+
+export function useUpdatePageMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation<IPage, Error, Partial<IPageInput>>({
+    mutationFn: (data) => updatePage(data),
+    onSuccess: (data) => {
+      const pageBySlug = queryClient.getQueryData<IPage>([
+        "pages",
+        data.slugId,
+      ]);
+      const pageById = queryClient.getQueryData<IPage>(["pages", data.id]);
+
+      if (pageBySlug) {
+        queryClient.setQueryData(["pages", data.slugId], {
+          ...pageBySlug,
+          ...data,
+        });
+      }
+
+      if (pageById) {
+        queryClient.setQueryData(["pages", data.id], { ...pageById, ...data });
+      }
+    },
+  });
 }

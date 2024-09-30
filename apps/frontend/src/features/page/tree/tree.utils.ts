@@ -112,3 +112,41 @@ export function findBreadcrumbPath(
   }
   return null;
 }
+
+export const updateTreeNodeName = (
+  nodes: SpaceTreeNode[],
+  nodeId: string,
+  newName: string,
+): SpaceTreeNode[] => {
+  return nodes.map((node) => {
+    if (node.id === nodeId) {
+      return { ...node, name: newName };
+    }
+    if (node.children && node.children.length > 0) {
+      return {
+        ...node,
+        children: updateTreeNodeName(node.children, nodeId, newName),
+      };
+    }
+    return node;
+  });
+};
+
+export const updateTreeNodeIcon = (
+  nodes: SpaceTreeNode[],
+  nodeId: string,
+  newIcon: string,
+): SpaceTreeNode[] => {
+  return nodes.map((node) => {
+    if (node.id === nodeId) {
+      return { ...node, icon: newIcon };
+    }
+    if (node.children && node.children.length > 0) {
+      return {
+        ...node,
+        children: updateTreeNodeIcon(node.children, nodeId, newIcon),
+      };
+    }
+    return node;
+  });
+};

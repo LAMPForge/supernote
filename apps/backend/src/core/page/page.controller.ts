@@ -12,6 +12,7 @@ import { PageRepository } from '@supernote/database/repositories/page/page.repos
 import { AuthWorkspace } from '../../common/decorators/auth-workspace.decorator';
 import { SidebarPageDto } from './dto/sidebar-page.dto';
 import { CreatePageDto } from './dto/create-page.dto';
+import { UpdatePageDto } from './dto/update-page.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('pages')
@@ -107,6 +108,27 @@ export class PageController {
     }
 
     return this.pageRepository.getSidebarPages(dto.spaceId, pagination, pageId);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('update')
+  async update(@Body() updatePageDto: UpdatePageDto, @AuthUser() user: User) {
+    const page = await this.pageRepository.findById(updatePageDto.pageId);
+
+    if (!page) {
+      throw new NotFoundException('Page not found');
+    }
+
+    const ability = await this.spaceAbility.createForUser(user, page.spaceId);
+    if (ability.cannot(SpaceCaslAction.Edit, SpaceCaslSubject.Page)) {
+      throw new ForbiddenException();
+    }
+
+    return this.pageService.update(
+      updatePageDto.pageId,
+      updatePageDto,
+      user.id,
+    );
   }
 
   @HttpCode(HttpStatus.OK)

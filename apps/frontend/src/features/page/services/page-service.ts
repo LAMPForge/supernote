@@ -34,3 +34,8 @@ export async function getPageBreadcrumbs(
   const req = await api.post("/pages/breadcrumbs", { pageId });
   return req.data;
 }
+
+export async function updatePage(data: Partial<IPageInput>): Promise<IPage> {
+  const req = await api.post<IPage>("/pages/update", data);
+  return req.data;
+}

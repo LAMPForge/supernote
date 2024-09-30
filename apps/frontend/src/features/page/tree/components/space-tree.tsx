@@ -16,11 +16,13 @@ import { treeDataAtom } from '../atoms/tree-data-atom.ts';
 import { queryClient } from '../../../../main.tsx';
 import { buildPageUrl } from '../../page.utils.ts';
 import { IPage, SidebarPagesParams } from '../../types/page.types.ts';
-import { fetchAncestorChildren, useGetRootSidebarPagesQuery, useGetSidebarPagesQuery, usePageQuery } from '../../queries/page-query.ts';
-import { appendNodeChildren, buildTree, buildTreeWithChildren } from '../tree.utils.ts';
+import { fetchAncestorChildren, useGetRootSidebarPagesQuery, useGetSidebarPagesQuery, usePageQuery, useUpdatePageMutation } from '../../queries/page-query.ts';
+import { appendNodeChildren, buildTree, buildTreeWithChildren, updateTreeNodeIcon } from '../tree.utils.ts';
 import { getPageBreadcrumbs, getSidebarPages } from '../../services/page-service.ts';
 import { extractPageSlugId } from '../../../../libs/utils.ts';
 import { dfs } from 'react-arborist/dist/main/utils';
+import { IconFileDescription } from '@tabler/icons-react';
+import EmojiPicker from '../../../../components/ui/emoji-picker.tsx';
 
 interface SpaceTreeProps {
   spaceId: string;
@@ -179,6 +181,7 @@ export default function SpaceTree({ spaceId, readOnly }: SpaceTreeProps) {
 
 function Node({ node, style, dragHandle, tree }: NodeRendererProps<any>) {
   const navigate = useNavigate();
+  const updatePageMutation = useUpdatePageMutation();
   const [treeData, setTreeData] = useAtom(treeDataAtom);
   const { spaceSlug } = useParams();
   async function handleLoadChildren(node: NodeApi<SpaceTreeNode>) {
@@ -230,6 +233,26 @@ function Node({ node, style, dragHandle, tree }: NodeRendererProps<any>) {
     }, 650);
   }
 
+  const handleUpdateNodeIcon = (nodeId: string, newIcon: string) => {
+    const updatedTree = updateTreeNodeIcon(treeData, nodeId, newIcon);
+    setTreeData(updatedTree);
+  };
+
+  const handleEmojiIconClick = (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleEmojiSelect = (emoji: { native: string }) => {
+    handleUpdateNodeIcon(node.id, emoji.native);
+    updatePageMutation.mutateAsync({ pageId: node.id, icon: emoji.native });
+  };
+
+  const handleRemoveEmoji = () => {
+    handleUpdateNodeIcon(node.id, null);
+    updatePageMutation.mutateAsync({ pageId: node.id, icon: null });
+  };
+
   return (
     <div
       style={style}
@@ -238,6 +261,21 @@ function Node({ node, style, dragHandle, tree }: NodeRendererProps<any>) {
       onClick={handleClick}
     >
       <PageArrow node={node} onExpandTree={() => handleLoadChildren(node)} />
+
+      <div onClick={handleEmojiIconClick} style={{ marginRight: "4px" }}>
+        <EmojiPicker
+          onEmojiSelect={handleEmojiSelect}
+          icon={
+            node.data.icon ? (
+              node.data.icon
+            ) : (
+              <IconFileDescription size="18" />
+            )
+          }
+          readOnly={tree.props.disableEdit as boolean}
+          removeEmojiAction={handleRemoveEmoji}
+        />
+      </div>
 
       <span className={classes.text}>{node.data.name || "untitled"}</span>
 

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 import { KyselyDB, KyselyTransaction } from '@supernote/database/types/kysely.types';
 import { SpaceMemberRepository } from '@supernote/database/repositories/space/space-member.repository';
-import { InsertablePage, Page } from '@supernote/database/types/entity.types';
+import { InsertablePage, Page, UpdatablePage } from '@supernote/database/types/entity.types';
 import { ExpressionBuilder } from 'kysely';
 import { DB } from '@supernote/database/types/db';
 import { jsonObjectFrom } from 'kysely/helpers/postgres';
@@ -226,5 +226,24 @@ export class PageRepository {
       .execute();
 
     return ancestors.reverse();
+  }
+
+  async updatePage(
+    updatablePage: UpdatablePage,
+    pageId: string,
+    trx?: KyselyTransaction,
+  ) {
+    const db = dbOrTrx(this.db, trx);
+    let query = db
+      .updateTable('pages')
+      .set({ ...updatablePage, updatedAt: new Date() });
+
+    if (isValidUUID(pageId)) {
+      query = query.where('id', '=', pageId);
+    } else {
+      query = query.where('slugId', '=', pageId);
+    }
+
+    return query.executeTakeFirst();
   }
 }

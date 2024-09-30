@@ -8,6 +8,7 @@ import { Page } from '@supernote/database/types/entity.types';
 import { CreatePageDto } from '../dto/create-page.dto';
 import { generateJitteredKeyBetween } from 'fractional-indexing-jittered';
 import { generateSlugId } from '../../../common/helpers/nanoid.utils';
+import { UpdatePageDto } from '../dto/update-page.dto';
 
 @Injectable()
 export class PageService {
@@ -90,5 +91,23 @@ export class PageService {
       workspaceId: workspaceId,
       lastUpdatedById: userId,
     });
+  }
+
+  async update(
+    pageId: string,
+    updatePageDto: UpdatePageDto,
+    userId: string,
+  ): Promise<Page> {
+    await this.pageRepository.updatePage(
+      {
+        title: updatePageDto.title,
+        icon: updatePageDto.icon,
+        lastUpdatedById: userId,
+        updatedAt: new Date(),
+      },
+      pageId,
+    );
+
+    return await this.pageRepository.findById(pageId);
   }
 }

@@ -7,6 +7,7 @@ import { useSpaceAbility } from '../../features/space/permissions/use-space-abil
 import { Helmet } from 'react-helmet-async';
 import { SpaceCaslAction, SpaceCaslSubject } from '../../features/space/permissions/permissions.types.ts';
 import PageHeader from '../../features/page/components/header/page-header.tsx';
+import { FullEditor } from '../../features/editor/full-editor.tsx';
 
 export default function Page() {
   const { pageSlug } = useParams();
@@ -41,6 +42,17 @@ export default function Page() {
 
         <PageHeader
           readOnly={spaceAbility.cannot(
+            SpaceCaslAction.Manage,
+            SpaceCaslSubject.Page,
+          )}
+        />
+
+        <FullEditor
+          pageId={page.id}
+          title={page.title}
+          slugId={page.slugId}
+          spaceSlug={page?.space?.slug}
+          editable={spaceAbility.can(
             SpaceCaslAction.Manage,
             SpaceCaslSubject.Page,
           )}
